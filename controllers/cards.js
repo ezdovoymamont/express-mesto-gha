@@ -8,17 +8,17 @@ module.exports.getCards = (req, res) => {
 module.exports.createCard = (req, res) => {
   const { name, link } = req.body;
   if (name === undefined) {
-    res.status(400).send({ message: 'Поле name должно быть заполнено' })
+    res.status(400).send({ message: 'Поле name должно быть заполнено' });
     return;
   }
   if (link === undefined) {
-    res.status(400).send({ message: 'Поле link должно быть заполнено' })
+    res.status(400).send({ message: 'Поле link должно быть заполнено' });
     return;
   }
   const owner = req.user.id;
   Card.create({ name, link, owner })
     .then((card) => res.send({ data: card }))
-    .catch(() => res.status(500).send({ message: 'Произошла ошибка'}));
+    .catch(() => res.status(500).send({ message: 'Произошла ошибка' }));
 };
 
 module.exports.deleteCard = (req, res) => {
@@ -26,8 +26,7 @@ module.exports.deleteCard = (req, res) => {
     .then((card) => {
       if (card === null) {
         res.status(404).send({ message: 'Карточка не найдена' });
-      }
-      else {
+      } else {
         res.send({ data: card });
       }
     })
@@ -43,8 +42,7 @@ module.exports.addLike = (req, res) => {
     .then((card) => {
       if (card === null) {
         res.status(404).send({ message: 'Карточка не найдена' });
-      }
-      else {
+      } else {
         res.send({ data: card });
       }
     })
@@ -60,8 +58,7 @@ module.exports.removeLike = (req, res) => {
     .then((card) => {
       if (card === null) {
         res.status(404).send({ message: 'Карточка не найдена' });
-      }
-      else {
+      } else {
         res.send({ data: card });
       }
     })

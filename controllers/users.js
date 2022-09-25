@@ -9,9 +9,8 @@ module.exports.getUser = (req, res) => {
   User.findById(req.params.id)
     .then((user) => {
       if (user === null) {
-        res.status(404).send({ message: 'Пользователь не найден' })
-      }
-      else {
+        res.status(404).send({ message: 'Пользователь не найден' });
+      } else {
         res.send({ data: user });
       }
     })
@@ -21,20 +20,20 @@ module.exports.getUser = (req, res) => {
 module.exports.createUser = (req, res) => {
   const { name, about, avatar } = req.body;
   if (name === undefined) {
-    res.status(400).send({ message: 'Поле name должно быть заполнено' })
+    res.status(400).send({ message: 'Поле name должно быть заполнено' });
     return;
   }
   if (about === undefined) {
-    res.status(400).send({ message: 'Поле about должно быть заполнено' })
+    res.status(400).send({ message: 'Поле about должно быть заполнено' });
     return;
   }
   if (avatar === undefined) {
-    res.status(400).send({ message: 'Поле avatar должно быть заполнено' })
+    res.status(400).send({ message: 'Поле avatar должно быть заполнено' });
     return;
   }
   User.create({ name, about, avatar })
     .then((user) => res.send({ data: user }))
-    .catch((err) => res.status(500).send({ message: `Произошла ошибка ${err}`}));
+    .catch((err) => res.status(500).send({ message: `Произошла ошибка ${err}` }));
 };
 
 module.exports.updateUser = (req, res) => {
@@ -43,8 +42,7 @@ module.exports.updateUser = (req, res) => {
     .then((user) => {
       if (user === null) {
         res.status(404).send({ message: 'Пользователь не найден' });
-      }
-      else {
+      } else {
         res.send({ data: user });
       }
     })
@@ -57,8 +55,7 @@ module.exports.updateAvatar = (req, res) => {
     .then((user) => {
       if (user === null) {
         res.status(404).send({ message: 'Пользователь не найден' });
-      }
-      else {
+      } else {
         res.send({ data: user });
       }
     })
