@@ -1,13 +1,7 @@
-const { getCards, createCard, deleteCard, addLike, removeLike} = require('../controllers/cards');
 const express = require('express');
-const router = express.Router();
+const { getCards, createCard, deleteCard, addLike, removeLike } = require('../controllers/cards');
 
-router.use((req, res, next) => {
-  req.user = {
-    _id: '5d8b8592978f8bd833ca8133' // вставьте сюда _id созданного в предыдущем пункте пользователя
-  };
-  next();
-});
+const router = express.Router();
 
 router.get('/', getCards);
 router.delete('/:id', deleteCard);
