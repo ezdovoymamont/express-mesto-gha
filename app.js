@@ -1,7 +1,8 @@
-import { connect } from 'mongoose';
-import express, { json } from 'express';
-import users from './routes/users';
-import cards from './routes/cards';
+const { connect } = require('mongoose');
+const express = require('express');
+const { json } = require('express');
+const users = require('./routes/users');
+const cards = require('./routes/cards');
 // Слушаем 3000 порт
 const { PORT = 3000 } = process.env;
 
@@ -13,14 +14,17 @@ connect('mongodb://localhost:27017/mydb', {
 
 const app = express();
 app.use(json());
-cards.use((req, res, next) => {
+app.use((req, res, next) => {
   req.user = {
-    _id: '5d8b8592978f8bd833ca8133', // вставьте сюда _id созданного в предыдущем пункте пользователя
+    _id: '633df63a6d6895f039b98009', // вставьте сюда _id созданного в предыдущем пункте пользователя
   };
   next();
 });
 app.use('/users', users);
 app.use('/cards', cards);
+app.get('*', function(req, res){
+  res.status(404).send({ message: 'Страница не найдена' });
+});
 
 app.listen(PORT, () => {
   // Если всё работает, консоль покажет, какой порт приложение слушает

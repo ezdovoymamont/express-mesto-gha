@@ -15,10 +15,16 @@ module.exports.createCard = (req, res) => {
     res.status(400).send({ message: 'Поле link должно быть заполнено' });
     return;
   }
-  const owner = req.user.id;
+  const owner = req.user._id;
   Card.create({ name, link, owner })
     .then((card) => res.send({ data: card }))
-    .catch(() => res.status(500).send({ message: 'Произошла ошибка' }));
+    .catch((err) => {
+      if(err.name === 'ValidationError') {
+        res.status(400).send({ message: `Произошла ошибка валидации данных` })
+        return;
+      }
+      res.status(500).send({ message: `Произошла ошибка` })
+    });
 };
 
 module.exports.deleteCard = (req, res) => {
@@ -30,13 +36,20 @@ module.exports.deleteCard = (req, res) => {
         res.send({ data: card });
       }
     })
-    .catch(() => res.status(500).send({ message: 'Произошла ошибка' }));
+    .catch((err) => {
+      if(err.name === 'CastError') {
+        res.status(400).send({ message: `Произошла ошибка валидации данных` })
+        return;
+      }
+      res.status(500).send({ message: `Произошла ошибка` })
+    });
 };
 
 module.exports.addLike = (req, res) => {
+  console.log(req.body.cardId);
   Card.findByIdAndUpdate(
-    req.params.cardId,
-    { $addToSet: { likes: req.user.id } },
+    req.body.cardId,
+    { $addToSet: { likes: req.user._id } },
     { new: true },
   )
     .then((card) => {
@@ -51,8 +64,8 @@ module.exports.addLike = (req, res) => {
 
 module.exports.removeLike = (req, res) => {
   Card.findByIdAndUpdate(
-    req.params.cardId,
-    { $pull: { likes: req.user.id } },
+    req.body.cardId,
+    { $pull: { likes: req.user._id } },
     { new: true },
   )
     .then((card) => {
