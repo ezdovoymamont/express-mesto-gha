@@ -19,11 +19,11 @@ module.exports.createCard = (req, res) => {
   Card.create({ name, link, owner })
     .then((card) => res.send({ data: card }))
     .catch((err) => {
-      if(err.name === 'ValidationError') {
-        res.status(400).send({ message: `Произошла ошибка валидации данных` })
+      if (err.name === 'ValidationError') {
+        res.status(400).send({ message: 'Произошла ошибка валидации данных' });
         return;
       }
-      res.status(500).send({ message: `Произошла ошибка` })
+      res.status(500).send({ message: 'Произошла ошибка' });
     });
 };
 
@@ -37,11 +37,11 @@ module.exports.deleteCard = (req, res) => {
       }
     })
     .catch((err) => {
-      if(err.name === 'CastError') {
-        res.status(400).send({ message: `Произошла ошибка валидации данных` })
+      if (err.name === 'CastError') {
+        res.status(400).send({ message: 'Произошла ошибка валидации данных' });
         return;
       }
-      res.status(500).send({ message: `Произошла ошибка` })
+      res.status(500).send({ message: 'Произошла ошибка' });
     });
 };
 

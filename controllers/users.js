@@ -16,11 +16,11 @@ module.exports.getUser = (req, res) => {
       }
     })
     .catch((err) => {
-      if(err.name === 'CastError') {
-        res.status(400).send({ message: `Произошла ошибка валидации данных` })
+      if (err.name === 'CastError') {
+        res.status(400).send({ message: 'Произошла ошибка валидации данных' });
         return;
       }
-      res.status(500).send({ message: `Произошла ошибка` })
+      res.status(500).send({ message: 'Произошла ошибка' });
     });
 };
 
@@ -41,11 +41,11 @@ module.exports.createUser = (req, res) => {
   User.create({ name, about, avatar })
     .then((user) => res.send({ data: user }))
     .catch((err) => {
-      if(err.name === 'ValidationError') {
-        res.status(400).send({ message: `Произошла ошибка валидации данных` })
+      if (err.name === 'ValidationError') {
+        res.status(400).send({ message: 'Произошла ошибка валидации данных' });
         return;
       }
-      res.status(500).send({ message: `Произошла ошибка` })
+      res.status(500).send({ message: 'Произошла ошибка' });
     });
 };
 
@@ -60,11 +60,11 @@ module.exports.updateUser = (req, res) => {
       }
     })
     .catch((err) => {
-      if(err.name === 'ValidationError') {
-        res.status(400).send({ message: `Произошла ошибка валидации данных` })
+      if (err.name === 'ValidationError') {
+        res.status(400).send({ message: 'Произошла ошибка валидации данных' });
         return;
       }
-      res.status(500).send({ message: `Произошла ошибка` })
+      res.status(500).send({ message: 'Произошла ошибка' });
     });
 };
 
@@ -79,10 +79,10 @@ module.exports.updateAvatar = (req, res) => {
       }
     })
     .catch((err) => {
-      if(err.name === 'ValidationError') {
-        res.status(400).send({ message: `Произошла ошибка валидации данных` })
+      if (err.name === 'ValidationError') {
+        res.status(400).send({ message: 'Произошла ошибка валидации данных' });
         return;
       }
-      res.status(500).send({ message: `Произошла ошибка` })
+      res.status(500).send({ message: 'Произошла ошибка' });
     });
 };
