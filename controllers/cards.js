@@ -58,7 +58,13 @@ module.exports.addLike = (req, res) => {
         res.send({ data: card });
       }
     })
-    .catch(() => res.status(500).send({ message: 'Произошла ошибка' }));
+    .catch((err) => {
+      if (err.name === 'CastError') {
+        res.status(400).send({ message: 'Произошла ошибка валидации данных' });
+        return;
+      }
+      res.status(500).send({ message: 'Произошла ошибка' });
+    });
 };
 
 module.exports.removeLike = (req, res) => {
@@ -74,5 +80,11 @@ module.exports.removeLike = (req, res) => {
         res.send({ data: card });
       }
     })
-    .catch(() => res.status(500).send({ message: 'Произошла ошибка' }));
+    .catch((err) => {
+      if (err.name === 'CastError') {
+        res.status(400).send({ message: 'Произошла ошибка валидации данных' });
+        return;
+      }
+      res.status(500).send({ message: 'Произошла ошибка' });
+    });
 };

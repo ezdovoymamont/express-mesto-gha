@@ -22,9 +22,12 @@ app.use((req, res, next) => {
 });
 app.use('/users', users);
 app.use('/cards', cards);
-app.get('*', function(req, res){
+
+const send404 = (req, res) => {
   res.status(404).send({ message: 'Страница не найдена' });
-});
+};
+app.get('*', send404);
+app.patch('*', send404);
 
 app.listen(PORT, () => {
   // Если всё работает, консоль покажет, какой порт приложение слушает
