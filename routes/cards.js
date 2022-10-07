@@ -8,7 +8,7 @@ const router = express.Router();
 router.get('/', getCards);
 router.delete('/:id', deleteCard);
 router.post('/', createCard);
-router.put('/', addLike);
-router.delete('/', removeLike);
+router.put('/:id/likes', addLike);
+router.delete('/:id/likes', removeLike);
 
 module.exports = router;

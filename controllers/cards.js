@@ -28,7 +28,7 @@ module.exports.createCard = (req, res) => {
 };
 
 module.exports.deleteCard = (req, res) => {
-  Card.findByIdAndRemove(req.id)
+  Card.findByIdAndRemove(req.params.id)
     .then((card) => {
       if (card === null) {
         res.status(404).send({ message: 'Карточка не найдена' });
@@ -46,9 +46,8 @@ module.exports.deleteCard = (req, res) => {
 };
 
 module.exports.addLike = (req, res) => {
-  console.log(req.body.cardId);
   Card.findByIdAndUpdate(
-    req.body.cardId,
+    req.params.id,
     { $addToSet: { likes: req.user._id } },
     { new: true },
   )
@@ -64,7 +63,7 @@ module.exports.addLike = (req, res) => {
 
 module.exports.removeLike = (req, res) => {
   Card.findByIdAndUpdate(
-    req.body.cardId,
+    req.params.id,
     { $pull: { likes: req.user._id } },
     { new: true },
   )

@@ -7,7 +7,7 @@ module.exports.getUsers = (req, res) => {
 };
 
 module.exports.getUser = (req, res) => {
-  User.findById(req.body.id)
+  User.findById(req.params.id)
     .then((user) => {
       if (user === null) {
         res.status(404).send({ message: 'Пользователь не найден' });
@@ -51,7 +51,7 @@ module.exports.createUser = (req, res) => {
 
 module.exports.updateUser = (req, res) => {
   const { name, about, avatar } = req.body;
-  User.findByIdAndUpdate(req.body.id, { name, about, avatar }, { new: true, runValidators: true })
+  User.findByIdAndUpdate(req.user._id, { name, about, avatar }, { new: true, runValidators: true })
     .then((user) => {
       if (user === null) {
         res.status(404).send({ message: 'Пользователь не найден' });
@@ -70,7 +70,7 @@ module.exports.updateUser = (req, res) => {
 
 module.exports.updateAvatar = (req, res) => {
   const { avatar } = req.body;
-  User.findByIdAndUpdate(req.body.id, { avatar }, { new: true, runValidators: true })
+  User.findByIdAndUpdate(req.user._id, { avatar }, { new: true, runValidators: true })
     .then((user) => {
       if (user === null) {
         res.status(404).send({ message: 'Пользователь не найден' });
