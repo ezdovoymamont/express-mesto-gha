@@ -26,8 +26,7 @@ app.use('/cards', cards);
 const send404 = (req, res) => {
   res.status(404).send({ message: 'Страница не найдена' });
 };
-app.get('*', send404);
-app.patch('*', send404);
+app.all('*', send404);
 
 app.listen(PORT, () => {
   // Если всё работает, консоль покажет, какой порт приложение слушает

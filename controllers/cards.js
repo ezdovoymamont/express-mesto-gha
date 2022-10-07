@@ -2,19 +2,12 @@ const Card = require('../models/cardSchema');
 
 module.exports.getCards = (req, res) => {
   Card.find()
-    .then((cards) => res.send(cards));
+    .then((cards) => res.send(cards))
+    .catch(() => res.status(500).send({ message: 'Произошла ошибка' }));
 };
 
 module.exports.createCard = (req, res) => {
   const { name, link } = req.body;
-  if (name === undefined) {
-    res.status(400).send({ message: 'Поле name должно быть заполнено' });
-    return;
-  }
-  if (link === undefined) {
-    res.status(400).send({ message: 'Поле link должно быть заполнено' });
-    return;
-  }
   const owner = req.user._id;
   Card.create({ name, link, owner })
     .then((card) => res.send({ data: card }))

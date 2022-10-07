@@ -26,18 +26,7 @@ module.exports.getUser = (req, res) => {
 
 module.exports.createUser = (req, res) => {
   const { name, about, avatar } = req.body;
-  if (name === undefined) {
-    res.status(400).send({ message: 'Поле name должно быть заполнено' });
-    return;
-  }
-  if (about === undefined) {
-    res.status(400).send({ message: 'Поле about должно быть заполнено' });
-    return;
-  }
-  if (avatar === undefined) {
-    res.status(400).send({ message: 'Поле avatar должно быть заполнено' });
-    return;
-  }
+
   User.create({ name, about, avatar })
     .then((user) => res.send({ data: user }))
     .catch((err) => {
