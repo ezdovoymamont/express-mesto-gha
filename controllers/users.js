@@ -29,7 +29,11 @@ module.exports.createUser = (req, res, next) => {
   User.create({
     name, about, avatar, email, password: passwordHash,
   })
-    .then((user) => res.send({ data: user }))
+    .then((user) => {
+      const userP = user.toObject();
+      delete userP.password;
+      res.send({ data: userP });
+    })
     .catch(next);
 };
 

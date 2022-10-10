@@ -41,7 +41,8 @@ app.post('/signup', celebrate({
     name: Joi.string().min(2).max(30),
     about: Joi.string().min(2).max(30),
     avatar: Joi.string().pattern(linkPattern).min(2).max(30),
-    email: Joi.string().pattern(emailPattern).required().min(2).max(30),
+    email: Joi.string().pattern(emailPattern).required().min(2)
+      .max(30),
     password: Joi.string().required().min(2).max(30),
   }),
 }), createUser);
@@ -56,7 +57,7 @@ app.use(errors());
 app.use((err, req, res, next) => {
   if (err.name === 'CastError'
     || err.name === 'ValidationError') {
-    res.status(400).send({ message: 'Произошла ошибка валидации данных' });
+    res.status(400).send({ message: `Произошла ошибка валидации данных${  err}` });
     return;
   }
   if (err.code === 11000) {
