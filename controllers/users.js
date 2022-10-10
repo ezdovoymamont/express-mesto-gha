@@ -1,77 +1,83 @@
+const bcryptjs = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 const User = require('../models/userSchema');
+const NotFoundError = require('../Errors/NotFoundError');
+const UnauthorizedError = require('../Errors/UnauthorizedError');
 
-module.exports.getUsers = (req, res) => {
+module.exports.getUsers = (req, res, next) => {
   User.find()
     .then((users) => res.send(users))
-    .catch(() => res.status(500).send({ message: 'Произошла ошибка' }));
+    .catch(next);
 };
 
-module.exports.getUser = (req, res) => {
-  User.findById(req.params.id)
+module.exports.getUser = (req, res, next) => {
+  User.findById(req.user._id)
     .then((user) => {
       if (user === null) {
-        res.status(404).send({ message: 'Пользователь не найден' });
-      } else {
-        res.send({ data: user });
+        throw new NotFoundError('Пользователь не найдена');
       }
+      res.send({ data: user });
     })
-    .catch((err) => {
-      if (err.name === 'CastError') {
-        res.status(400).send({ message: 'Произошла ошибка валидации данных' });
-        return;
-      }
-      res.status(500).send({ message: 'Произошла ошибка' });
-    });
+    .catch(next);
 };
 
-module.exports.createUser = (req, res) => {
-  const { name, about, avatar } = req.body;
-
-  User.create({ name, about, avatar })
+module.exports.createUser = (req, res, next) => {
+  const {
+    name, about, avatar, password, email,
+  } = req.body;
+  const passwordHash = bcryptjs.hashSync(password);
+  User.create({
+    name, about, avatar, email, password: passwordHash,
+  })
     .then((user) => res.send({ data: user }))
-    .catch((err) => {
-      if (err.name === 'ValidationError') {
-        res.status(400).send({ message: 'Произошла ошибка валидации данных' });
-        return;
-      }
-      res.status(500).send({ message: 'Произошла ошибка' });
-    });
+    .catch(next);
 };
 
-module.exports.updateUser = (req, res) => {
+module.exports.updateUser = (req, res, next) => {
   const { name, about, avatar } = req.body;
   User.findByIdAndUpdate(req.user._id, { name, about, avatar }, { new: true, runValidators: true })
     .then((user) => {
       if (user === null) {
-        res.status(404).send({ message: 'Пользователь не найден' });
-      } else {
-        res.send({ data: user });
+        throw new NotFoundError('Пользователь не найдена');
       }
+      res.send({ data: user });
     })
-    .catch((err) => {
-      if (err.name === 'ValidationError') {
-        res.status(400).send({ message: 'Произошла ошибка валидации данных' });
-        return;
-      }
-      res.status(500).send({ message: 'Произошла ошибка' });
-    });
+    .catch(next);
 };
 
-module.exports.updateAvatar = (req, res) => {
+module.exports.updateAvatar = (req, res, next) => {
   const { avatar } = req.body;
   User.findByIdAndUpdate(req.user._id, { avatar }, { new: true, runValidators: true })
     .then((user) => {
       if (user === null) {
-        res.status(404).send({ message: 'Пользователь не найден' });
-      } else {
-        res.send({ data: user });
+        throw new NotFoundError('Пользователь не найдена');
       }
+      res.send({ data: user });
     })
-    .catch((err) => {
-      if (err.name === 'ValidationError') {
-        res.status(400).send({ message: 'Произошла ошибка валидации данных' });
-        return;
+    .catch(next);
+};
+
+module.exports.login = (req, res, next) => {
+  const { email, password } = req.body;
+  User.findOne({ email }).select('+password')
+    .then((user) => {
+      if (user == null) {
+        res.status(404).send({ message: 'Пользователь не найден' });
       }
-      res.status(500).send({ message: 'Произошла ошибка' });
-    });
+
+      if (bcryptjs.compareSync(password, user.password) === false) {
+        throw new UnauthorizedError('Неверный логин/пароль');
+      }
+
+      const { NODE_ENV, JWT_SECRET } = process.env;
+      const token = jwt.sign(
+        { _id: user._id },
+        NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret',
+        { expiresIn: '1w' },
+      );
+      console.log(process.env.JWT_SECRET);
+
+      res.status(200).send({ token });
+    })
+    .catch(next);
 };

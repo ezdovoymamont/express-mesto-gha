@@ -1,44 +1,40 @@
 const Card = require('../models/cardSchema');
+const NotFoundError = require('../Errors/NotFoundError');
+const UnauthorizedError = require('../Errors/UnauthorizedError');
 
-module.exports.getCards = (req, res) => {
+module.exports.getCards = (req, res, next) => {
   Card.find()
     .then((cards) => res.send(cards))
-    .catch(() => res.status(500).send({ message: 'Произошла ошибка' }));
+    .catch(next);
 };
 
-module.exports.createCard = (req, res) => {
+module.exports.createCard = (req, res, next) => {
   const { name, link } = req.body;
   const owner = req.user._id;
   Card.create({ name, link, owner })
     .then((card) => res.send({ data: card }))
-    .catch((err) => {
-      if (err.name === 'ValidationError') {
-        res.status(400).send({ message: 'Произошла ошибка валидации данных' });
-        return;
-      }
-      res.status(500).send({ message: 'Произошла ошибка' });
-    });
+    .catch(next);
 };
 
-module.exports.deleteCard = (req, res) => {
-  Card.findByIdAndRemove(req.params.id)
+module.exports.deleteCard = (req, res, next) => {
+  Card.find(req.params.id)
     .then((card) => {
       if (card === null) {
-        res.status(404).send({ message: 'Карточка не найдена' });
-      } else {
-        res.send({ data: card });
+        throw new NotFoundError('Карточка не найдена');
       }
+      if (card.owner !== req.user._id) {
+        throw new UnauthorizedError('Нельзя удалять не свою карточку');
+      }
+      Card.remove(card)
+        .then(() => {
+          res.send({ data: card });
+        })
+        .catch(next);
     })
-    .catch((err) => {
-      if (err.name === 'CastError') {
-        res.status(400).send({ message: 'Произошла ошибка валидации данных' });
-        return;
-      }
-      res.status(500).send({ message: 'Произошла ошибка' });
-    });
+    .catch(next);
 };
 
-module.exports.addLike = (req, res) => {
+module.exports.addLike = (req, res, next) => {
   Card.findByIdAndUpdate(
     req.params.id,
     { $addToSet: { likes: req.user._id } },
@@ -46,21 +42,14 @@ module.exports.addLike = (req, res) => {
   )
     .then((card) => {
       if (card === null) {
-        res.status(404).send({ message: 'Карточка не найдена' });
-      } else {
-        res.send({ data: card });
+        throw new NotFoundError('Карточка не найдена');
       }
+      res.send({ data: card });
     })
-    .catch((err) => {
-      if (err.name === 'CastError') {
-        res.status(400).send({ message: 'Произошла ошибка валидации данных' });
-        return;
-      }
-      res.status(500).send({ message: 'Произошла ошибка' });
-    });
+    .catch(next);
 };
 
-module.exports.removeLike = (req, res) => {
+module.exports.removeLike = (req, res, next) => {
   Card.findByIdAndUpdate(
     req.params.id,
     { $pull: { likes: req.user._id } },
@@ -68,16 +57,9 @@ module.exports.removeLike = (req, res) => {
   )
     .then((card) => {
       if (card === null) {
-        res.status(404).send({ message: 'Карточка не найдена' });
-      } else {
-        res.send({ data: card });
+        throw new NotFoundError('Карточка не найдена');
       }
+      res.send({ data: card });
     })
-    .catch((err) => {
-      if (err.name === 'CastError') {
-        res.status(400).send({ message: 'Произошла ошибка валидации данных' });
-        return;
-      }
-      res.status(500).send({ message: 'Произошла ошибка' });
-    });
+    .catch(next);
 };
