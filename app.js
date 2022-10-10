@@ -28,7 +28,8 @@ app.post('/signin', celebrate({
   body: Joi.object().keys({
     name: Joi.string().required().min(2).max(30),
     about: Joi.string().required().min(2).max(30),
-    avatar: Joi.string().pattern('/(http|https):\\/\\/(\\w+:?\\w*@)?(\\S+)(:[0-9]+)?(\\/|\\/([\\w#!:.?+=&%@\\-/]))?/').required().min(2)
+    // eslint-disable-next-line prefer-regex-literals
+    avatar: Joi.string().pattern(new RegExp('/(http|https):\\/\\/(\\w+:?\\w*@)?(\\S+)(:[0-9]+)?(\\/|\\/([\\w#!:.?+=&%@\\-/]))?/')).required().min(2)
       .max(30),
     email: Joi.string().required().min(2).max(30),
     password: Joi.string().required().min(2).max(30),
