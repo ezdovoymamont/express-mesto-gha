@@ -32,14 +32,16 @@ app.post('/signin', celebrate({
   }),
 }), login);
 
+// eslint-disable-next-line prefer-regex-literals
+const emailPattern = new RegExp('^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$');
+// eslint-disable-next-line prefer-regex-literals
+const linkPattern = new RegExp('^(?:http(s)?:\\/\\/)?[\\w.-]+(?:\\.[\\w\\.-]+)+[\\w\\-\\._~:/?#[\\]@!\\$&\'\\(\\)\\*\\+,;=.]+$');
 app.post('/signup', celebrate({
   body: Joi.object().keys({
     name: Joi.string().required().min(2).max(30),
     about: Joi.string().required().min(2).max(30),
-    // eslint-disable-next-line prefer-regex-literals
-    avatar: Joi.string().pattern(new RegExp('/(http|https):\\/\\/(\\w+:?\\w*@)?(\\S+)(:[0-9]+)?(\\/|\\/([\\w#!:.?+=&%@\\-/]))?/')).required().min(2)
-      .max(30),
-    email: Joi.string().required().min(2).max(30),
+    avatar: Joi.string().pattern(linkPattern).required().min(2).max(30),
+    email: Joi.string().pattern(emailPattern).required().min(2).max(30),
     password: Joi.string().required().min(2).max(30),
   }),
 }), createUser);
