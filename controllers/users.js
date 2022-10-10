@@ -42,7 +42,7 @@ module.exports.updateUser = (req, res, next) => {
   User.findByIdAndUpdate(req.user._id, { name, about, avatar }, { new: true, runValidators: true })
     .then((user) => {
       if (user === null) {
-        throw new NotFoundError('Пользователь не найдена');
+        throw new UnauthorizedError('Пользователь не найдена');
       }
       res.send({ data: user });
     })
