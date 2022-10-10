@@ -17,7 +17,7 @@ const userSchema = new mongoose.Schema({
   avatar: {
     type: String,
     default: 'https://pictures.s3.yandex.net/resources/jacques-cousteau_1604399756.png',
-    validate: [value => validator.isURL(value, { protocols: ['http','https','ftp'], require_tld: true, require_protocol: true })]
+    validate: [(value) => validator.isURL(value, { protocols: ['http', 'https', 'ftp'], require_tld: true, require_protocol: true })],
   },
   email: {
     type: String,
@@ -31,6 +31,5 @@ const userSchema = new mongoose.Schema({
     select: false,
   },
 });
-
 
 module.exports = mongoose.model('user', userSchema);

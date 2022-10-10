@@ -2,6 +2,10 @@ require('dotenv').config();
 const { connect } = require('mongoose');
 const express = require('express');
 const { json } = require('express');
+const {
+  celebrate,
+  Joi,
+} = require('celebrate');
 const users = require('./routes/users');
 const cards = require('./routes/cards');
 const { login, createUser } = require('./controllers/users');
@@ -18,9 +22,19 @@ connect('mongodb://localhost:27017/mydb', {
 const app = express();
 app.use(json());
 
-app.use('/users', users, middleJwt);
-app.use('/cards', cards, middleJwt);
-app.post('/signin', login);
+app.use('/users', middleJwt, users);
+app.use('/cards', middleJwt, cards);
+app.post('/signin', celebrate({
+  body: Joi.object().keys({
+    name: Joi.string().required().min(2).max(30),
+    about: Joi.string().required().min(2).max(30),
+    avatar: Joi.string().pattern('/(http|https):\\/\\/(\\w+:?\\w*@)?(\\S+)(:[0-9]+)?(\\/|\\/([\\w#!:.?+=&%@\\-/]))?/').required().min(2)
+      .max(30),
+    email: Joi.string().required().min(2).max(30),
+    password: Joi.string().required().min(2).max(30),
+  }),
+}), login);
+
 app.post('/signup', createUser);
 
 const send404 = (req, res) => {
@@ -39,7 +53,11 @@ app.use((err, req, res, next) => {
     res.status(409).send({ message: 'Пользователь уже создан' });
     return;
   }
-  res.status(err.statusCode).send({ message: err.message });
+  if (err.statusCode) {
+    res.status(err.statusCode).send({ message: err.message });
+    return;
+  }
+  res.status(500).send({ message: 'Произошла ошибка' });
 });
 app.listen(PORT, () => {
   // Если всё работает, консоль покажет, какой порт приложение слушает
