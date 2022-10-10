@@ -6,6 +6,7 @@ const {
   celebrate,
   Joi,
 } = require('celebrate');
+const { errors } = require('celebrate');
 const users = require('./routes/users');
 const cards = require('./routes/cards');
 const { login, createUser } = require('./controllers/users');
@@ -48,6 +49,7 @@ const send404 = (req, res) => {
 };
 app.all('*', send404);
 
+app.use(errors());
 // eslint-disable-next-line no-unused-vars
 app.use((err, req, res, next) => {
   if (err.name === 'CastError'
