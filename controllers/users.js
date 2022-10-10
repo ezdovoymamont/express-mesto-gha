@@ -66,7 +66,7 @@ module.exports.login = (req, res, next) => {
   User.findOne({ email }).select('+password')
     .then((user) => {
       if (user == null) {
-        res.status(404).send({ message: 'Пользователь не найден' });
+        throw new UnauthorizedError('Пользователь не найден');
       }
 
       if (bcryptjs.compareSync(password, user.password) === false) {
