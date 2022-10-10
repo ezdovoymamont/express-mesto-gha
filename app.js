@@ -26,6 +26,13 @@ app.use('/users', middleJwt, users);
 app.use('/cards', middleJwt, cards);
 app.post('/signin', celebrate({
   body: Joi.object().keys({
+    email: Joi.string().required().min(2).max(30),
+    password: Joi.string().required().min(2).max(30),
+  }),
+}), login);
+
+app.post('/signup', celebrate({
+  body: Joi.object().keys({
     name: Joi.string().required().min(2).max(30),
     about: Joi.string().required().min(2).max(30),
     // eslint-disable-next-line prefer-regex-literals
@@ -34,9 +41,7 @@ app.post('/signin', celebrate({
     email: Joi.string().required().min(2).max(30),
     password: Joi.string().required().min(2).max(30),
   }),
-}), login);
-
-app.post('/signup', createUser);
+}), createUser);
 
 const send404 = (req, res) => {
   res.status(404).send({ message: 'Страница не найдена' });
