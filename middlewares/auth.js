@@ -2,8 +2,9 @@ const jwt = require('jsonwebtoken');
 
 const middleJwt = (req, res, next) => {
   const { NODE_ENV, JWT_SECRET } = process.env;
+  const token = req.headers.authorization;
   jwt.verify(
-    req.body.jwt,
+    token,
     NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret',
     {},
     (err, payload) => {
