@@ -1,6 +1,6 @@
 const Card = require('../models/cardSchema');
 const NotFoundError = require('../Errors/NotFoundError');
-const UnauthorizedError = require('../Errors/UnauthorizedError');
+const ForbiddenError = require('../Errors/ForbiddenError');
 
 module.exports.getCards = (req, res, next) => {
   Card.find()
