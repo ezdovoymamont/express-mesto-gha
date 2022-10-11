@@ -17,12 +17,12 @@ module.exports.createCard = (req, res, next) => {
 };
 
 module.exports.deleteCard = (req, res, next) => {
-  Card.find({ _id: req.params.id })
+  Card.findOne({ _id: req.params.id })
     .then((card) => {
       if (card === null) {
         throw new NotFoundError('Карточка не найдена');
       }
-      if (card.owner !== req.user._id) {
+      if (card.owner.equals(req.user._id) === false) {
         throw new UnauthorizedError('Нельзя удалять не свою карточку');
       }
       Card.remove(card)
