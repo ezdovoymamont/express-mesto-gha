@@ -11,9 +11,8 @@ module.exports.getUsers = (req, res, next) => {
 };
 
 module.exports.getUser = (req, res, next) => {
-  let id = req.params.id;
-  if(id === undefined)
-  {
+  let { id } = req.params;
+  if (id === undefined) {
     id = req.user._id;
   }
   User.findById(id)

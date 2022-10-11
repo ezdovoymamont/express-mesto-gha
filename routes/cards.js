@@ -12,7 +12,18 @@ const linkPattern = new RegExp('^(?:http(s)?:\\/\\/)?[\\w.-]+(?:\\.[\\w\\.-]+)+[
 const router = express.Router();
 
 router.get('/', getCards);
-router.delete('/:id', deleteCard);
+router.delete(
+  '/:id',
+  celebrate({
+    params: Joi.object()
+      .keys({
+        id: Joi.string()
+          .required()
+          .length(24),
+      }),
+  }),
+  deleteCard,
+);
 router.post('/', celebrate({
   body: Joi.object().keys({
     name: Joi.string().required().min(2).max(30),

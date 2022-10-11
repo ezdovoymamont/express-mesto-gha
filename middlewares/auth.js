@@ -2,8 +2,7 @@ const jwt = require('jsonwebtoken');
 
 const middleJwt = (req, res, next) => {
   const { NODE_ENV, JWT_SECRET } = process.env;
-  if(req.headers.authorization === undefined)
-  {
+  if (req.headers.authorization === undefined) {
     res.status(401).send({ message: 'Ошибка сессии' });
     return;
   }
