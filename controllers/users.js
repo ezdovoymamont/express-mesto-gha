@@ -81,7 +81,7 @@ module.exports.login = (req, res, next) => {
       );
       console.log(process.env.JWT_SECRET);
 
-      res.status(200).send({ token });
+      res.status(200).send({ jwt: token });
     })
     .catch(next);
 };
