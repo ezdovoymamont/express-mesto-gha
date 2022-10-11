@@ -13,6 +13,12 @@ module.exports.createCard = (req, res, next) => {
   const owner = req.user._id;
   Card.create({ name, link, owner })
     .then((card) => res.send({ data: card }))
+    .catch((err) => {
+      if (err.name === 'CastError'
+        || err.name === 'ValidationError') {
+        throw new Error('Произошла ошибка валидации данных');
+      }
+    })
     .catch(next);
 };
 

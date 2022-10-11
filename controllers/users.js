@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/userSchema');
 const NotFoundError = require('../Errors/NotFoundError');
 const UnauthorizedError = require('../Errors/UnauthorizedError');
+const UserAlreadyExistsError = require('../Errors/UserAlreadyExistsError');
 
 module.exports.getUsers = (req, res, next) => {
   User.find()
@@ -37,6 +38,15 @@ module.exports.createUser = (req, res, next) => {
       const userP = user.toObject();
       delete userP.password;
       res.send({ data: userP });
+    })
+    .catch((err) => {
+      if (err.name === 'CastError'
+        || err.name === 'ValidationError') {
+        throw new Error('Произошла ошибка валидации данных');
+      }
+      if (err.code === 11000) {
+        throw new UserAlreadyExistsError('Пользователь уже создан');
+      }
     })
     .catch(next);
 };

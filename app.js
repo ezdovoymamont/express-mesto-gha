@@ -11,6 +11,7 @@ const users = require('./routes/users');
 const cards = require('./routes/cards');
 const { login, createUser } = require('./controllers/users');
 const middleJwt = require('./middlewares/auth');
+const NotFoundError = require('./Errors/NotFoundError');
 // Слушаем 3000 порт
 const { PORT = 3000 } = process.env;
 // eslint-disable-next-line prefer-regex-literals
@@ -49,23 +50,15 @@ app.post('/signup', celebrate({
   }),
 }), createUser);
 
+// eslint-disable-next-line no-unused-vars
 const send404 = (req, res) => {
-  res.status(404).send({ message: 'Страница не найдена' });
+  throw new NotFoundError('Страница не найдена');
 };
-app.all('*', send404);
+app.all('*', middleJwt, send404);
 
 app.use(errors());
 // eslint-disable-next-line no-unused-vars
 app.use((err, req, res, next) => {
-  if (err.name === 'CastError'
-    || err.name === 'ValidationError') {
-    res.status(400).send({ message: `Произошла ошибка валидации данных${err}` });
-    return;
-  }
-  if (err.code === 11000) {
-    res.status(409).send({ message: 'Пользователь уже создан' });
-    return;
-  }
   if (err.statusCode) {
     res.status(err.statusCode).send({ message: err.message });
     return;

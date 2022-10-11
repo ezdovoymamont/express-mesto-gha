@@ -3,8 +3,7 @@ const jwt = require('jsonwebtoken');
 const middleJwt = (req, res, next) => {
   const { NODE_ENV, JWT_SECRET } = process.env;
   if (req.headers.authorization === undefined) {
-    res.status(401).send({ message: 'Ошибка сессии' });
-    return;
+    throw new UnauthorizedError('Ошибка сессии');
   }
   const token = req.headers.authorization.split(' ')[1];
   jwt.verify(
@@ -13,7 +12,7 @@ const middleJwt = (req, res, next) => {
     {},
     (err, payload) => {
       if (err) {
-        res.status(401).send({ message: 'Ошибка сессии' });
+        throw new UnauthorizedError('Ошибка сессии');
       }
       req.user = payload;
       next();
