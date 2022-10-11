@@ -42,25 +42,33 @@ module.exports.createUser = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'CastError'
         || err.name === 'ValidationError') {
-        throw new Error('Произошла ошибка валидации данных');
+        next(new Error('Произошла ошибка валидации данных'));
       }
       if (err.code === 11000) {
-        throw new UserAlreadyExistsError('Пользователь уже создан');
+        next(new UserAlreadyExistsError('Пользователь уже создан'));
+      } else {
+        next(err);
       }
-    })
-    .catch(next);
+    });
 };
 
 module.exports.updateUser = (req, res, next) => {
-  const { name, about, avatar } = req.body;
-  User.findByIdAndUpdate(req.user._id, { name, about, avatar }, { new: true, runValidators: true })
+  const { name, about } = req.body;
+  User.findByIdAndUpdate(req.user._id, { name, about }, { new: true, runValidators: true })
     .then((user) => {
       if (user === null) {
-        throw new UnauthorizedError('Пользователь не найдена');
+        throw new NotFoundError('Пользователь не найдена');
       }
       res.send({ data: user });
     })
-    .catch(next);
+    .catch((err) => {
+      if (err.name === 'CastError'
+        || err.name === 'ValidationError') {
+        next(new Error('Произошла ошибка валидации данных'));
+      } else {
+        next(err);
+      }
+    });
 };
 
 module.exports.updateAvatar = (req, res, next) => {
@@ -72,7 +80,12 @@ module.exports.updateAvatar = (req, res, next) => {
       }
       res.send({ data: user });
     })
-    .catch(next);
+    .catch((err) => {
+      if (err.name === 'CastError'
+        || err.name === 'ValidationError') {
+        next(new Error('Произошла ошибка валидации данных'));
+      }
+    });
 };
 
 module.exports.login = (req, res, next) => {

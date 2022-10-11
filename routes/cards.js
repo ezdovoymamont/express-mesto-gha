@@ -17,9 +17,7 @@ router.delete(
   celebrate({
     params: Joi.object()
       .keys({
-        id: Joi.string()
-          .required()
-          .length(24),
+        id: Joi.string().length(24).hex().required(),
       }),
   }),
   deleteCard,
@@ -33,17 +31,13 @@ router.post('/', celebrate({
 router.put('/:id/likes', celebrate({
   params: Joi.object()
     .keys({
-      id: Joi.string()
-        .required()
-        .length(24),
+      id: Joi.string().length(24).hex().required(),
     }),
 }), addLike);
 router.delete('/:id/likes', celebrate({
   params: Joi.object()
     .keys({
-      id: Joi.string()
-        .required()
-        .length(24),
+      id: Joi.string().length(24).hex().required(),
     }),
 }), removeLike);
 

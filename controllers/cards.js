@@ -16,10 +16,11 @@ module.exports.createCard = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'CastError'
         || err.name === 'ValidationError') {
-        throw new Error('Произошла ошибка валидации данных');
+        next(new Error('Произошла ошибка валидации данных'));
+      } else {
+        next(err);
       }
-    })
-    .catch(next);
+    });
 };
 
 module.exports.deleteCard = (req, res, next) => {

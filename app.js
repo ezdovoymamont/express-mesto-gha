@@ -29,13 +29,10 @@ app.use(json());
 app.use('/users', middleJwt, users);
 app.use('/cards', middleJwt, cards);
 
-// eslint-disable-next-line prefer-regex-literals
-const emailPattern = new RegExp('^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$');
 app.post('/signin', celebrate({
   body: Joi.object().keys({
-    email: Joi.string().pattern(emailPattern).required().min(2)
-      .max(30),
-    password: Joi.string().required().min(2).max(30),
+    email: Joi.string().required().email(),
+    password: Joi.string().required(),
   }),
 }), login);
 
@@ -43,10 +40,9 @@ app.post('/signup', celebrate({
   body: Joi.object().keys({
     name: Joi.string().min(2).max(30),
     about: Joi.string().min(2).max(30),
-    avatar: Joi.string().pattern(linkPattern).min(2).max(30),
-    email: Joi.string().pattern(emailPattern).required().min(2)
-      .max(30),
-    password: Joi.string().required().min(2).max(30),
+    avatar: Joi.string().pattern(linkPattern),
+    email: Joi.string().required().email(),
+    password: Joi.string().required(),
   }),
 }), createUser);
 
@@ -57,13 +53,13 @@ const send404 = (req, res) => {
 app.all('*', middleJwt, send404);
 
 app.use(errors());
-// eslint-disable-next-line no-unused-vars
 app.use((err, req, res, next) => {
   if (err.statusCode) {
     res.status(err.statusCode).send({ message: err.message });
     return;
   }
-  res.status(500).send({ message: `Произошла ошибка${err}` });
+  res.status(500).send({ message: 'Произошла ошибка' });
+  next();
 });
 app.listen(PORT, () => {
   // Если всё работает, консоль покажет, какой порт приложение слушает
