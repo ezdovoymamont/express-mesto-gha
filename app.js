@@ -70,7 +70,7 @@ app.use((err, req, res, next) => {
     res.status(err.statusCode).send({ message: err.message });
     return;
   }
-  res.status(500).send({ message: 'Произошла ошибка' });
+  res.status(500).send({ message: 'Произошла ошибка' + err });
 });
 app.listen(PORT, () => {
   // Если всё работает, консоль покажет, какой порт приложение слушает
