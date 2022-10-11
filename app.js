@@ -13,6 +13,8 @@ const { login, createUser } = require('./controllers/users');
 const middleJwt = require('./middlewares/auth');
 // Слушаем 3000 порт
 const { PORT = 3000 } = process.env;
+// eslint-disable-next-line prefer-regex-literals
+const linkPattern = new RegExp('^(?:http(s)?:\\/\\/)?[\\w.-]+(?:\\.[\\w\\.-]+)+[\\w\\-\\._~:/?#[\\]@!\\$&\'\\(\\)\\*\\+,;=.]+$');
 
 connect('mongodb://localhost:27017/mydb', {
   useNewUrlParser: true,
@@ -28,22 +30,21 @@ app.use('/cards', middleJwt, cards);
 
 // eslint-disable-next-line prefer-regex-literals
 const emailPattern = new RegExp('^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$');
-// eslint-disable-next-line prefer-regex-literals
-const linkPattern = new RegExp('^(?:http(s)?:\\/\\/)?[\\w.-]+(?:\\.[\\w\\.-]+)+[\\w\\-\\._~:/?#[\\]@!\\$&\'\\(\\)\\*\\+,;=.]+$');
 app.post('/signin', celebrate({
   body: Joi.object().keys({
-    email: Joi.string().pattern(emailPattern).required().min(2).max(30),
+    email: Joi.string().pattern(emailPattern).required().min(2)
+      .max(30),
     password: Joi.string().required().min(2).max(30),
   }),
 }), login);
-
 
 app.post('/signup', celebrate({
   body: Joi.object().keys({
     name: Joi.string().min(2).max(30),
     about: Joi.string().min(2).max(30),
     avatar: Joi.string().pattern(linkPattern).min(2).max(30),
-    email: Joi.string().pattern(emailPattern).required().min(2).max(30),
+    email: Joi.string().pattern(emailPattern).required().min(2)
+      .max(30),
     password: Joi.string().required().min(2).max(30),
   }),
 }), createUser);
@@ -58,7 +59,7 @@ app.use(errors());
 app.use((err, req, res, next) => {
   if (err.name === 'CastError'
     || err.name === 'ValidationError') {
-    res.status(400).send({ message: `Произошла ошибка валидации данных${  err}` });
+    res.status(400).send({ message: `Произошла ошибка валидации данных${err}` });
     return;
   }
   if (err.code === 11000) {
@@ -75,5 +76,3 @@ app.listen(PORT, () => {
   // Если всё работает, консоль покажет, какой порт приложение слушает
   console.log(`App listening on port ${PORT}`);
 });
-
-module.exports = linkPattern;

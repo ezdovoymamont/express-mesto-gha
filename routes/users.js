@@ -6,7 +6,8 @@ const {
 const {
   getUsers, getUser, updateUser, updateAvatar,
 } = require('../controllers/users');
-const linkPattern = require('../app');
+// eslint-disable-next-line prefer-regex-literals
+const linkPattern = new RegExp('^(?:http(s)?:\\/\\/)?[\\w.-]+(?:\\.[\\w\\.-]+)+[\\w\\-\\._~:/?#[\\]@!\\$&\'\\(\\)\\*\\+,;=.]+$');
 
 const router = express.Router();
 
