@@ -7,6 +7,7 @@ const router = express.Router();
 
 router.get('/', getUsers);
 router.get('/me', getUser);
+router.get('/:id', getUser);
 router.patch('/me', updateUser);
 router.patch('/me/avatar', updateAvatar);
 
