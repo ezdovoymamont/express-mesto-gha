@@ -14,6 +14,7 @@ const middleJwt = require('./middlewares/auth');
 const NotFoundError = require('./Errors/NotFoundError');
 // Слушаем 3000 порт
 const { PORT = 3000 } = process.env;
+const { requestLogger, errorLogger } = require('./middlewares/logger');
 // eslint-disable-next-line prefer-regex-literals
 const linkPattern = new RegExp('^(?:http(s)?:\\/\\/)?[\\w.-]+(?:\\.[\\w\\.-]+)+[\\w\\-\\._~:/?#[\\]@!\\$&\'\\(\\)\\*\\+,;=.]+$');
 
@@ -25,6 +26,7 @@ connect('mongodb://localhost:27017/mydb', {
 
 const app = express();
 app.use(json());
+app.use(requestLogger);
 
 app.use('/users', middleJwt, users);
 app.use('/cards', middleJwt, cards);
@@ -51,7 +53,7 @@ const send404 = (req, res) => {
   throw new NotFoundError('Страница не найдена');
 };
 app.all('*', middleJwt, send404);
-
+app.use(errorLogger);
 app.use(errors());
 app.use((err, req, res, next) => {
   if (err.statusCode) {
