@@ -1,6 +1,7 @@
 const Card = require('../models/cardSchema');
 const NotFoundError = require('../Errors/NotFoundError');
 const ForbiddenError = require('../Errors/ForbiddenError');
+const Error400 = require('../Errors/Error400');
 
 module.exports.getCards = (req, res, next) => {
   Card.find()
@@ -16,7 +17,7 @@ module.exports.createCard = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'CastError'
         || err.name === 'ValidationError') {
-        next(new Error('Произошла ошибка валидации данных'));
+        next(new Error400('Произошла ошибка валидации данных'));
       } else {
         next(err);
       }

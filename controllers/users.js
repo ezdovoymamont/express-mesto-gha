@@ -4,6 +4,7 @@ const User = require('../models/userSchema');
 const NotFoundError = require('../Errors/NotFoundError');
 const UnauthorizedError = require('../Errors/UnauthorizedError');
 const UserAlreadyExistsError = require('../Errors/UserAlreadyExistsError');
+const Error400 = require('../Errors/Error400');
 
 module.exports.getUsers = (req, res, next) => {
   User.find()
@@ -42,7 +43,7 @@ module.exports.createUser = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'CastError'
         || err.name === 'ValidationError') {
-        next(new Error('Произошла ошибка валидации данных'));
+        next(new Error400('Произошла ошибка валидации данных'));
       }
       if (err.code === 11000) {
         next(new UserAlreadyExistsError('Пользователь уже создан'));
@@ -64,7 +65,7 @@ module.exports.updateUser = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'CastError'
         || err.name === 'ValidationError') {
-        next(new Error('Произошла ошибка валидации данных'));
+        next(new Error400('Произошла ошибка валидации данных'));
       } else {
         next(err);
       }
@@ -83,7 +84,9 @@ module.exports.updateAvatar = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'CastError'
         || err.name === 'ValidationError') {
-        next(new Error('Произошла ошибка валидации данных'));
+        next(new Error400('Произошла ошибка валидации данных'));
+      } else {
+        next(err);
       }
     });
 };
