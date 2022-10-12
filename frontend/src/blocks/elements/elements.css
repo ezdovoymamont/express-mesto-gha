@@ -1,0 +1,15 @@
+.elements {
+    padding: 50px 0 66px 0;
+}
+
+@media screen and (max-width: 1100px) {
+    .elements {
+        padding: 47px 19px 66px 19px;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .elements {
+        padding: 47px 19px 66px 19px;
+    }
+}

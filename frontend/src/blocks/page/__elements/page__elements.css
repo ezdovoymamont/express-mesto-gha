@@ -1,0 +1,9 @@
+.page__elements {
+	margin-top: 0;
+}
+
+@media (max-width: 680px) {
+	.page__elements {
+		margin-top: 0;
+	}
+}

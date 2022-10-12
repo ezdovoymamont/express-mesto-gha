@@ -1,0 +1,16 @@
+.popup__avatar{
+    position: relative;
+    border-radius: 10px;
+    box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.15);
+    background-color: #FFFFFF;
+    width: 430px;
+    min-height: 272px;
+    margin: 0 auto 0;
+}
+
+@media (max-width: 580px) {
+    .popup__avatar {
+        width: 282px;
+        min-height: 264px;
+    }
+}

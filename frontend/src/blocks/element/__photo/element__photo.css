@@ -1,0 +1,10 @@
+.element__photo {
+	border-radius: 10px 10px 0 0;
+	display: block;
+    width: 100%;
+    min-height: 282px;
+    max-height: 282px;
+    height: 100%;
+    object-fit: cover;
+    cursor: pointer;
+}

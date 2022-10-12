@@ -1,0 +1,23 @@
+    .popup__input {
+        box-sizing: border-box;
+        border: none;
+        border-bottom: 1px solid rgba(0,0,0,0.2);
+        font-size: 14px;
+        line-height: 17px;
+        
+        max-width: 358px;
+        min-height: 27px;
+        padding-bottom: 13px;
+        margin: 29px auto 0;
+        width: 100%;
+        outline-color: #42aaff;
+        outline-offset: 1px;
+    }
+
+    @media (max-width: 580px) {
+        .popup__input {
+            max-width: 238px;
+            margin-top: 30px;
+            margin-left: 22px;
+        }
+    }

@@ -1,0 +1,9 @@
+.popup__content_info {
+    position: relative;
+    border-radius: 10px;
+    padding-bottom: 30px;
+    width: 430px;
+    -webkit-box-shadow: 0 0 25px rgb(0 0 0 / 15%);
+    box-shadow: 0 0 25px rgb(0 0 0 / 15%);
+    background-color: #fff;
+}

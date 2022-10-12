@@ -1,0 +1,15 @@
+.popup__input-error_visible {
+  opacity: 1;
+  font-size: 12px;
+  line-height: 15px;
+  color: #FF0000;
+  margin-left: 36px;
+  transition: 0.3s;
+}
+
+@media (max-width: 580px) {
+	.popup__input-error_visible  {
+    margin-left: 22px;
+    max-width: 238px;
+	}
+}

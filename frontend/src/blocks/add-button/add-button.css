@@ -1,0 +1,20 @@
+.add-button {
+	display: flex;
+	width: 150px;
+	height: 50px;
+	border: 2px solid #FFFFFF;
+	border-radius: 2px;
+	background: url(../../images/icon-add.svg) no-repeat center;
+	cursor: pointer;
+	grid-area: add-button;
+}
+
+.add-button:hover {
+	opacity: 0.6;
+}
+
+@media (max-width: 740px) {
+	.add-button {
+		width: 282px;
+	}
+}

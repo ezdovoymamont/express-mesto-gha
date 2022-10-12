@@ -1,0 +1,15 @@
+.edit-profile {
+	display: flex;
+    padding: 0;
+    width: 24px;
+    height: 24px;
+    background: url(../../images/icon-edit.svg) no-repeat center;
+    border: 1px solid #FFFFFF;
+    outline: none;
+    cursor: pointer;
+	grid-area: edit-profile;
+}
+
+.edit-profile:hover {
+	opacity: 0.6;
+}
