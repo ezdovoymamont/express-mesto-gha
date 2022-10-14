@@ -102,6 +102,6 @@ class Api {
     }
 }
 
-const api = new Api('https://mesto.nomoreparties.co/v1/cohort-41', 'c667b9e8-d609-4570-8d24-855bf53da70e');
+const api = new Api('https://api.https://garry.students.nomoredomains.icu', 'c667b9e8-d609-4570-8d24-855bf53da70e');
 
 export default api;
