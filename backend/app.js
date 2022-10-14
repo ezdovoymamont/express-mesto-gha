@@ -16,8 +16,6 @@ const NotFoundError = require('./Errors/NotFoundError');
 const { PORT = 3000 } = process.env;
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 
-const linkPattern = new RegExp('^(?:http(s)?:\\/\\/)?[\\w.-]+(?:\\.[\\w\\.-]+)+[\\w\\-\\._~:/?#[\\]@!\\$&\'\\(\\)\\*\\+,;=.]+$');
-
 connect('mongodb://localhost:27017/mydb', {
   useNewUrlParser: true,
 //  useCreateIndex: true,
@@ -75,7 +73,7 @@ app.post('/signup', celebrate({
   body: Joi.object().keys({
     name: Joi.string().min(2).max(30),
     about: Joi.string().min(2).max(30),
-    avatar: Joi.string().pattern(linkPattern),
+    avatar: Joi.string().pattern(/https?:\/\/(www\.)?[a-zA-Z\d\-.]{1,}\.[a-z]{1,6}([/a-z0-9\-._~:?#[\]@!$&'()*+,;=]*)/),
     email: Joi.string().required().email(),
     password: Joi.string().required(),
   }),

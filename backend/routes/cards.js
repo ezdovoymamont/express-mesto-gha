@@ -7,7 +7,6 @@ const {
   getCards, createCard, deleteCard, addLike, removeLike,
 } = require('../controllers/cards');
 // eslint-disable-next-line prefer-regex-literals
-const linkPattern = new RegExp('^(?:http(s)?:\\/\\/)?[\\w.-]+(?:\\.[\\w\\.-]+)+[\\w\\-\\._~:/?#[\\]@!\\$&\'\\(\\)\\*\\+,;=.]+$');
 
 const router = express.Router();
 
@@ -25,7 +24,7 @@ router.delete(
 router.post('/', celebrate({
   body: Joi.object().keys({
     name: Joi.string().required().min(2).max(30),
-    link: Joi.string().pattern(linkPattern).required().min(1),
+    link: Joi.string().pattern(/https?:\/\/(www\.)?[a-zA-Z\d\-.]{1,}\.[a-z]{1,6}([/a-z0-9\-._~:?#[\]@!$&'()*+,;=]*)/).required().min(1),
   }),
 }), createCard);
 router.put('/:id/likes', celebrate({

@@ -6,8 +6,6 @@ const {
 const {
   getUsers, getUser, updateUser, updateAvatar,
 } = require('../controllers/users');
-// eslint-disable-next-line prefer-regex-literals
-const linkPattern = new RegExp('^(?:http(s)?:\\/\\/)?[\\w.-]+(?:\\.[\\w\\.-]+)+[\\w\\-\\._~:/?#[\\]@!\\$&\'\\(\\)\\*\\+,;=.]+$');
 
 const router = express.Router();
 
@@ -42,7 +40,7 @@ router.patch(
 );
 router.patch('/me/avatar', celebrate({
   body: Joi.object().keys({
-    avatar: Joi.string().pattern(linkPattern),
+    avatar: Joi.string().pattern(/https?:\/\/(www\.)?[a-zA-Z\d\-.]{1,}\.[a-z]{1,6}([/a-z0-9\-._~:?#[\]@!$&'()*+,;=]*)/),
   }),
 }), updateAvatar);
 
