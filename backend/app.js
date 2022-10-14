@@ -25,8 +25,8 @@ connect('mongodb://localhost:27017/mydb', {
 });
 
 const allowedCors = [
-  'https://praktikum.tk',
-  'http://praktikum.tk',
+  'http://garry.students.nomoredomains.icu/',
+  'https://garry.students.nomoredomains.icu/',
   'localhost:3000'
 ];
 
@@ -36,6 +36,13 @@ app.use(json());
 app.use(requestLogger);
 
 app.use(function(req, res, next) {
+  const { method } = req; // Сохраняем тип запроса (HTTP-метод) в соответствующую переменную
+  const requestHeaders = req.headers['access-control-request-headers'];
+  if (method === 'OPTIONS') {
+    res.header('Access-Control-Allow-Methods', requestHeaders);
+    return res.end();
+  }
+
   const { origin } = req.headers; // Сохраняем источник запроса в переменную origin
   // проверяем, что источник запроса есть среди разрешённых
   if (allowedCors.includes(origin)) {
