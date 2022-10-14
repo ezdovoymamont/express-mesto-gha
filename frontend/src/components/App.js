@@ -145,7 +145,7 @@ function App() {
     api
       .updatePhotoProfile(link)
       .then((data) => {
-        setCurrentUser(data);
+        setCurrentUser(data.data);
       })
       .then(closeAllPopups)
       .catch((error) => console.log(error));
