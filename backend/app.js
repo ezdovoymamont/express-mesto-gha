@@ -43,18 +43,20 @@ app.use((req, res, next) => {
   if (method === 'OPTIONS') {
     res.header('Access-Control-Allow-Headers', requestHeaders);
     res.header('Access-Control-Allow-Methods', DEFAULT_ALLOWED_METHODS);
-    res.header('Access-Control-Allow-Origin', "*");
+
+    console.log('CORS2');
+    const { origin } = req.headers; // Сохраняем источник запроса в переменную origin
+    console.log(origin);
+    if (allowedCors.includes(origin)) {
+      res.header('Access-Control-Allow-Origin', origin);
+    }
     return res.end();
   }
 
 
-  console.log('CORS2');
-  const { origin } = req.headers; // Сохраняем источник запроса в переменную origin
-  console.log(origin);
 
-  if (allowedCors.includes(origin)) {
-    res.header('Access-Control-Allow-Origin', origin);
-  }
+
+
 
   next();
 });
