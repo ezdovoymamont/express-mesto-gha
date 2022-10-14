@@ -36,19 +36,17 @@ app.use(json());
 app.use(requestLogger);
 
 app.use(function(req, res, next) {
-  console.log('CORS');
   const { method } = req; // Сохраняем тип запроса (HTTP-метод) в соответствующую переменную
-  console.log(method);
   const requestHeaders = req.headers['access-control-request-headers'];
-  console.log(requestHeaders);
+  const DEFAULT_ALLOWED_METHODS = 'GET,HEAD,PUT,PATCH,POST,DELETE';
 
   if (method === 'OPTIONS') {
-    res.header('Access-Control-Allow-Methods', requestHeaders);
+    res.header('Access-Control-Allow-Headers', requestHeaders);
+    res.header('Access-Control-Allow-Methods', DEFAULT_ALLOWED_METHODS);
     return res.end();
   }
 
   const { origin } = req.headers; // Сохраняем источник запроса в переменную origin
-  console.log(origin);
   // проверяем, что источник запроса есть среди разрешённых
   if (allowedCors.includes(origin)) {
     res.header('Access-Control-Allow-Origin', origin);
