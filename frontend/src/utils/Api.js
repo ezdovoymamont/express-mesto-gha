@@ -17,7 +17,7 @@ class Api {
         return fetch(`${this._baseUrl}/users/me`, {
             method: 'GET',
             headers: {
-                authorization: this._getToken
+                authorization: this._getToken()
             }
         })
             .then(this._checkError);
@@ -38,7 +38,7 @@ class Api {
 
             method: 'PATCH',
             headers: {
-                authorization: this._getToken,
+                authorization: this._getToken(),
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(user)
@@ -51,7 +51,7 @@ class Api {
 
             method: 'PATCH',
             headers: {
-                authorization: this._getToken,
+                authorization: this._getToken(),
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(avatar)
@@ -63,7 +63,7 @@ class Api {
         return fetch(`${this._baseUrl}/cards`, {
             method: 'POST',
             headers: {
-                authorization: this._getToken,
+                authorization: this._getToken(),
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(card)
@@ -75,7 +75,7 @@ class Api {
         return fetch(`${this._baseUrl}/cards/${id}`, {
             method: 'DELETE',
             headers: {
-                authorization: this._getToken
+                authorization: this._getToken()
             }
         })
             .then(this._checkError);
@@ -85,7 +85,7 @@ class Api {
         return fetch(`${this._baseUrl}/cards/${id}/likes`, {
             method: 'PUT',
             headers: {
-                authorization: this._getToken
+                authorization: this._getToken()
             }
         })
             .then(this._checkError);
@@ -95,7 +95,7 @@ class Api {
         return fetch(`${this._baseUrl}/cards/${id}/likes`, {
             method: 'DELETE',
             headers: {
-                authorization: this._getToken
+                authorization: this._getToken()
             }
         })
             .then(this._checkError);
