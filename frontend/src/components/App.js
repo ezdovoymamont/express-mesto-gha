@@ -50,7 +50,7 @@ function App() {
     api
       .getUserInfo()
       .then((user) => {
-        setCurrentUser(user);
+        setCurrentUser(user.data);
       })
       .catch((err) => console.log("Eroor:" + err));
   }, []);
@@ -65,13 +65,14 @@ function App() {
   }, []);
 
   function handleCardLike(card) {
-    const isLiked = card.likes.some((i) => i._id === currentUser._id);
+    const isLiked = card.likes.some((i) => i === currentUser._id);
+
     if (!isLiked) {
       api
         .putLike(card._id)
         .then((newCard) => {
           setCard((state) =>
-            state.map((c) => (c._id === card._id ? newCard : c))
+            state.map((c) => (c._id === card._id ? newCard.data : c))
           );
         })
         .catch((error) => {
@@ -82,7 +83,7 @@ function App() {
         .deleteLike(card._id)
         .then((newCard) => {
           setCard((state) =>
-            state.map((c) => (c._id === card._id ? newCard : c))
+            state.map((c) => (c._id === card._id ? newCard.data : c))
           );
         })
         .catch((error) => {
@@ -134,7 +135,7 @@ function App() {
     api
       .updateProfile(user)
       .then((data) => {
-        setCurrentUser(data);
+        setCurrentUser(data.data);
       })
       .then(closeAllPopups)
       .catch((error) => console.log(error));
@@ -154,7 +155,7 @@ function App() {
     api
       .addNewCard(card)
       .then((newCard) => {
-        setCard([newCard, ...cards]);
+        setCard([newCard.data, ...cards]);
       })
       .then(closeAllPopups)
       .catch((error) => console.log(error));
