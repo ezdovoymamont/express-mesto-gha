@@ -103,6 +103,6 @@ class Api {
 }
 
 const api = new Api('https://api.garry.students.nomoredomains.icu',
-  () => localStorage.getItem("token"));
+  () => 'Bearer ' + localStorage.getItem("token"));
 
 export default api;
