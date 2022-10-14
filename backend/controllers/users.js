@@ -28,7 +28,6 @@ module.exports.getUser = (req, res, next) => {
 };
 
 module.exports.createUser = (req, res, next) => {
-  console.log('createUser');
   const {
     name, about, avatar, password, email,
   } = req.body;
@@ -110,7 +109,6 @@ module.exports.login = (req, res, next) => {
         NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret',
         { expiresIn: '1w' },
       );
-      console.log(process.env.JWT_SECRET);
 
       res.status(200).send({ jwt: token });
     })
