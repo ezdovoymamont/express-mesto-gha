@@ -3,7 +3,7 @@ import React, { useState } from "react";
 function Login({ handleLogin }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!email || !password) {
@@ -46,7 +46,7 @@ function Login({ handleLogin }) {
           className="login__input"
           type="password"
           name="password"
-          placeholder="Пароль"
+          placeholder="Пароль1"
           value={password || ""}
           onChange={handlePasswordChange}
           id="password"
@@ -54,7 +54,7 @@ function Login({ handleLogin }) {
         />
         <span className="popup__input-error" />
         </label>
-        
+
         <button type="submit" className="login__save-button">
           Войти
         </button>
