@@ -35,7 +35,7 @@ const app = express();
 app.use(json());
 app.use(requestLogger);
 
-app.use(function(req, res, next) {
+app.use((req, res, next) => {
   const { method } = req; // Сохраняем тип запроса (HTTP-метод) в соответствующую переменную
   const requestHeaders = req.headers['access-control-request-headers'];
   const DEFAULT_ALLOWED_METHODS = 'GET,HEAD,PUT,PATCH,POST,DELETE';
@@ -46,8 +46,11 @@ app.use(function(req, res, next) {
     return res.end();
   }
 
+
+  console.log('CORS2');
   const { origin } = req.headers; // Сохраняем источник запроса в переменную origin
-  // проверяем, что источник запроса есть среди разрешённых
+  console.log(origin);
+
   if (allowedCors.includes(origin)) {
     res.header('Access-Control-Allow-Origin', origin);
   }
