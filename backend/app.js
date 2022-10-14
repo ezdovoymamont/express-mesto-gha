@@ -25,8 +25,8 @@ connect('mongodb://localhost:27017/mydb', {
 });
 
 const allowedCors = [
-  'http://garry.students.nomoredomains.icu/',
-  'https://garry.students.nomoredomains.icu/',
+  'http://garry.students.nomoredomains.icu',
+  'https://garry.students.nomoredomains.icu',
   'localhost:3000'
 ];
 
@@ -53,7 +53,7 @@ app.use((req, res, next) => {
   console.log(origin);
 
   if (allowedCors.includes(origin)) {
-    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Origin', origin);
   }
 
   next();
