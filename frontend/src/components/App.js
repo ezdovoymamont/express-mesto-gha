@@ -178,8 +178,8 @@ function App() {
     auth
       .authorize(email, password)
       .then((data) => {
-        if (data.token) {
-          localStorage.setItem("token", data.token);
+        if (data.jwt) {
+          localStorage.setItem("token", data.jwt);
           setLoggedIn(true);
           setEmail(email);
         }
@@ -234,7 +234,7 @@ function App() {
                 <ProtectedRoute loggedIn={loggedIn}>
                   <Header link={loggedIn ? "/" : "/sign-in"}
                           text={loggedIn ? "Выйти" : "Войти"}
-                          onClick={handleLogout} 
+                          onClick={handleLogout}
                           email={email} />
 
                   <Main

@@ -15,7 +15,7 @@ const NotFoundError = require('./Errors/NotFoundError');
 // Слушаем 3000 порт
 const { PORT = 3000 } = process.env;
 const { requestLogger, errorLogger } = require('./middlewares/logger');
-// eslint-disable-next-line prefer-regex-literals
+
 const linkPattern = new RegExp('^(?:http(s)?:\\/\\/)?[\\w.-]+(?:\\.[\\w\\.-]+)+[\\w\\-\\._~:/?#[\\]@!\\$&\'\\(\\)\\*\\+,;=.]+$');
 
 connect('mongodb://localhost:27017/mydb', {
@@ -27,9 +27,8 @@ connect('mongodb://localhost:27017/mydb', {
 const allowedCors = [
   'http://garry.students.nomoredomains.icu',
   'https://garry.students.nomoredomains.icu',
-  'localhost:3000'
+  'localhost:3000',
 ];
-
 
 const app = express();
 app.use(json());
@@ -47,10 +46,7 @@ app.use((req, res, next) => {
     return res.end();
   }
 
-
-  console.log('CORS2');
   const { origin } = req.headers; // Сохраняем источник запроса в переменную origin
-  console.log(origin);
 
   if (allowedCors.includes(origin)) {
     res.header('Access-Control-Allow-Origin', origin);
